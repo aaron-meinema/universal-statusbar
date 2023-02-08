@@ -1,5 +1,6 @@
 use std::process::Command;
 use std::{thread, time};
+use std::env;
 use chrono::prelude::*;
 
 fn main() {
@@ -55,7 +56,7 @@ fn get_time() -> String {
 }
 
 fn format_time(number: u32) -> String {
-    if number < 2 {
+    if number < 10 {
         return format!("0{}", number);
     }
 
