@@ -12,7 +12,7 @@ pub fn get_time(arguments: Split<&str>, use_args: bool) -> String {
 
 fn get_time_without_arguments() -> String {
     let local = Local::now();
-    return format!("{} {} {} | {}:{}", 
+    return format!("{}-{}-{} | {}:{}", 
         format_time(local.day()), 
         format_time(local.month()), 
         local.year(), 
