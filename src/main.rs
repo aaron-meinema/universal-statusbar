@@ -1,11 +1,29 @@
 use std::process::Command;
 use std::{thread, time};
 use std::env;
-use chrono::prelude::*;
+mod time_format;
 
 fn main() {
+    //{day month year | hour:minute }
+    let args: Vec<String> = env::args().collect();
+    let mut option_t = false;
+    let mut use_args = false;
+    let mut time_argument = "";
+    for arg in args.iter() {
+        if option_t {
+            time_argument = arg;
+            option_t = false;
+        }
+        if arg.eq("-t") {
+            option_t = true;
+            use_args = true;
+        }
+    }
+    let time_arg = time_argument.split(" ");
+
     loop {
-        let time = get_time();
+        let args = time_arg.clone();
+        let time = time_format::get_time(args, use_args);
         let volume = format_volume(get_volume());
 
         let print = format!(" {} | {} ", time, volume);
@@ -45,20 +63,3 @@ fn get_volume() -> i16 {
     return vol.parse().unwrap();
 }
 
-fn get_time() -> String {
-    let local = Local::now();
-    return format!("{} {} {} | {}:{}", 
-        format_time(local.day()), 
-        format_time(local.month()), 
-        local.year(), 
-        format_time(local.hour()), 
-        format_time(local.minute()));
-}
-
-fn format_time(number: u32) -> String {
-    if number < 10 {
-        return format!("0{}", number);
-    }
-
-    return number.to_string();
-}
