@@ -38,10 +38,13 @@ fn format_power(power: i16) -> String {
         return format!(" {}", power);
     }
     if power < 30 {
-        return format!(" {}", power);
+        return format!(" {}", power);
     }
-    if power < 75 {
+    if power < 60 {
         return format!(" {}", power);
+    }
+    if power < 80 {
+        return format!(" {}", power);
     }
 
 
@@ -68,7 +71,7 @@ fn format_volume(volume: i16) -> String {
         return format!(" {}", volume)
     }
     else if volume < 50 {
-        return format!(" {}", volume);
+        return format!(" {}", volume);
     }
 
     return format!(" {}", volume);
