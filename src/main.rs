@@ -25,12 +25,42 @@ fn main() {
         let args = time_arg.clone();
         let time = time_format::get_time(args, use_args);
         let volume = format_volume(get_volume());
-
-        let print = format!(" {} | {} ", time, volume);
+        let power = format_power(get_power());
+        let print = format!(" {} | {} | {}",volume , power, time);
         let _ = Command::new("xsetroot").args(["-name", &print]).spawn();
         let second = time::Duration::from_secs(1);
         thread::sleep(second);
     }
+}
+
+fn format_power(power: i16) -> String {
+    if power < 8 {
+        return format!(" {}", power);
+    }
+    if power < 30 {
+        return format!(" {}", power);
+    }
+    if power < 75 {
+        return format!(" {}", power);
+    }
+
+
+    return format!(" {}", power);
+}
+
+fn get_power() -> i16 {
+    let args = ["-i", "/org/freedesktop/UPower/devices/battery_BAT0"];
+    let command = Command::new("upower").args(args).output().unwrap();
+    let full_text = String::from_utf8(command.stdout).unwrap();
+    let split = full_text.split("\n");
+    for line in split{
+        if line.contains("percentage:") {
+            let mut percentage = line.replace("percentage:", "").trim().to_string();
+            percentage.pop();
+            return percentage.parse().unwrap();
+        }
+    }
+    return 0;
 }
 
 fn format_volume(volume: i16) -> String {
